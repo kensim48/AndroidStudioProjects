@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+    <!--Important-->
+
+    <TextView
+        android:id="@+id/textViewRandomImages"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hello World!"
+        />
+<!--Layout width is match_parent so that it fills the screen, height we don't want it to fill the screen-->
+    <!--By calling the id it allows android to call upon the widget in the android library-->
+
+
+    <ImageView
+        android:id="@+id/charaImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/download1" />
+
+    <Button
+        android:id="@+id/charaButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Show Next Image" />
+
+</LinearLayout>
