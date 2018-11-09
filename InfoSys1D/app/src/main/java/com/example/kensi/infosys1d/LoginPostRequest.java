@@ -10,19 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LoginPostRequest {
-    public static String main(String password, String email, boolean remember) {
-
-        if (!emailCheck(email)){
-            return "E-mail wrong format";
-        }
-
-        if (password.length()<6){
-            return "Password too short";
-        }
-        if (password.length()>128){
-            return "Password too long";
-        }
-
+        public static String login(String password, String email, boolean remember) {
         try {
             String rememberString;
             if (remember){
@@ -31,7 +19,7 @@ public class LoginPostRequest {
             else{
                 rememberString="0";
             }
-            return call_me(password, email, rememberString);
+            return login_call_me(password, email, rememberString);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e("MYAPP", "exception", e);
@@ -39,7 +27,7 @@ public class LoginPostRequest {
         }
     }
 
-    public static String call_me(String password, String email, String rememberString) throws Exception {
+    public static String login_call_me(String password, String email, String rememberString) throws Exception {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("password", password);
         parameters.put("email", email);
@@ -55,8 +43,6 @@ public class LoginPostRequest {
         out.flush();
         out.close();
         int responseCode = con.getResponseCode();
-//        System.out.println("\nSending 'POST' request to URL : " + url);
-//        System.out.println("Response Code : " + responseCode);
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream()));
         String inputLine;
@@ -65,8 +51,78 @@ public class LoginPostRequest {
             response.append(inputLine);
         }
         in.close();
-//        System.out.println(response.toString());
         return response.toString();
+    }
+
+    public static String registration(String password, String email, String username, boolean vendor) {
+        try {
+            String vendorString;
+            if (vendor){
+                vendorString="1";
+            }
+            else{
+                vendorString="0";
+            }
+            return registration_call_me(password, email, username, vendorString);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("MYAPP", "exception", e);
+            return "check log";
+        }
+    }
+
+    public static String registration_call_me(String password, String email,String username, String vendorString) throws Exception {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("password", password);
+        parameters.put("email", email);
+        parameters.put("username", username);
+        parameters.put("is_vendor", vendorString);
+        String data = ParameterStringBuilder.getParamsString(parameters);
+        String url = "https://chocolatepie.tech/admin/register";
+        URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestMethod("POST");
+        con.setDoOutput(true);
+        DataOutputStream out = new DataOutputStream(con.getOutputStream());
+        out.writeBytes(data);
+        out.flush();
+        out.close();
+        int responseCode = con.getResponseCode();
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+        return response.toString();
+    }
+
+    //not implemented
+    public static boolean shortChecker(String email, String password) {
+        if ( email.length()<128 && email.length()>5 && password.length()>6 && password.length() < 128){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    //checks email and password
+    public static String longChecker(String email, String password) {
+        if (!emailCheck(email)) {
+            return "E-mail wrong format";
+        }
+        if (password.length() < 6) {
+            return "Password too short";
+        }
+        if (password.length() > 128) {
+            return "Password too long";
+        }
+        else{
+            return "no_error";
+        }
     }
 
     public static boolean emailCheck (String email){

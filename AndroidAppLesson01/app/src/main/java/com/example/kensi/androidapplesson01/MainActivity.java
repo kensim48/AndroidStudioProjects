@@ -1,5 +1,6 @@
 package com.example.kensi.androidapplesson01;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
                 count = count + 1;
                 int id = images.get(index);
                 charaImage.setImageResource(id);
+                Intent i = new Intent(MainActivity.this, Main2Activity.class);
+                startActivity(i);
             }
         });
         //TODO 1.9 [On your own] Create another Button to always

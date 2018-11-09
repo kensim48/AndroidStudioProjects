@@ -7,7 +7,7 @@ import org.json.simple.parser.JSONParser;
 
 public class test {
     public static void main(String[] args) throws Exception {
-        String serverReply = LoginPostRequest.main("asdadasd","asdnsnioad@uiasuias.com",true);
+        String serverReply = LoginPostRequest.login("asdadasd","asdnsnioad@uiasuias.com",true);
         System.out.println(serverReply.toCharArray()[11]);
     }
 }
