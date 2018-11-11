@@ -45,20 +45,30 @@ public class Registration extends AppCompatActivity {
                     Toast.makeText(Registration.this, R.string.password_mismatch, Toast.LENGTH_LONG).show();
                 } else {
                     String reply = LoginPostRequest.registration(inputPassword.getText().toString(), email, inputUser.getText().toString(), checkVendor.isChecked());
-                    Toast.makeText(Registration.this, reply, Toast.LENGTH_LONG).show();
-                    //todo different JSON login scenarios
-                    Intent i = new Intent(Registration.this, Login.class);
-                    startActivity(i);
+                    String parsedReply = LoginPostRequest.jsonParse(reply);
+                    if (parsedReply.equals("1")) {
+                        Toast.makeText(Registration.this, "Registration success", Toast.LENGTH_LONG).show();
+                        Intent i = new Intent(Registration.this, Login.class);
+                        startActivity(i);
+                    } else if (parsedReply.equals("0")) {
+                        Toast.makeText(Registration.this, "Server error", Toast.LENGTH_LONG).show();
+                    } else if (parsedReply.equals("-1")) {
+                        Toast.makeText(Registration.this, "E-mail already used", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(Registration.this, "Generic error", Toast.LENGTH_LONG).show();
+                    }
                 }
+                Intent i = new Intent(Registration.this, Login.class);
+                startActivity(i);
             }
         });
-    }
-
-    //Back button function
-    public boolean onOptionsItemSelected(MenuItem item){
-        Intent myIntent = new Intent(getApplicationContext(), Login.class);
-        startActivityForResult(myIntent, 0);
-        return true;
 
     }
+        //Back button function
+        public boolean onOptionsItemSelected (MenuItem item) {
+            Intent myIntent = new Intent(getApplicationContext(), Login.class);
+            startActivityForResult(myIntent, 0);
+            return true;
+        }
+
 }

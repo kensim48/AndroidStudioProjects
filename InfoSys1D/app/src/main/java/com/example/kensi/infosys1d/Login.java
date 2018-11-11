@@ -4,12 +4,16 @@ import android.content.Intent;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class Login extends AppCompatActivity {
     @Override
@@ -30,7 +34,6 @@ public class Login extends AppCompatActivity {
         final EditText inputPassword = findViewById(R.id.inputRegEmail);
         final CheckBox checkRemember = findViewById(R.id.checkRemember);
         final Button buttonSubmit = findViewById(R.id.buttonRegSubmit);
-        final TextView replyPlaceholder = findViewById(R.id.replyPlaceholder);
         final Button buttonForget = findViewById(R.id.buttonForget);
         final Button buttonSign = findViewById(R.id.buttonSign);
 
@@ -52,9 +55,21 @@ public class Login extends AppCompatActivity {
                     Toast.makeText(Login.this, errorMsg, Toast.LENGTH_LONG).show();
                 } else {
                     String serverReply = LoginPostRequest.login(inputPassword.getText().toString(), email, checkRemember.isChecked());
-                    replyPlaceholder.setText(serverReply);
+                    String parsedReply = LoginPostRequest.jsonParse(serverReply);
+                    if (parsedReply.equals("1")){
+                        Toast.makeText(Login.this, "Login success", Toast.LENGTH_LONG).show();
+                        Intent i = new Intent(Login.this, QRreader.class);
+                        startActivity(i);
+                    } else if (parsedReply.equals("0")){
+                        Toast.makeText(Login.this, "Server error", Toast.LENGTH_LONG).show();
+                    } else if (parsedReply.equals("-1")){
+                        Toast.makeText(Login.this, "Wrong E-mail/password", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(Login.this, "Generic error", Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });
     }
+
 }

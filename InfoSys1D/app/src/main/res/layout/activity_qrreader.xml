@@ -18,6 +18,9 @@
         android:layout_height="500dp"
         android:id="@+id/camerapreview"
         android:layout_centerInParent="true"
+        android:adjustViewBounds="true"
+        android:cropToPadding="false"
+        android:scaleType="fitXY"
         />
 
     <TextView

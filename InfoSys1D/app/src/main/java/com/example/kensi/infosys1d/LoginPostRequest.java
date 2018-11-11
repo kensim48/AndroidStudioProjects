@@ -1,5 +1,11 @@
 package com.example.kensi.infosys1d;
+import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -10,14 +16,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LoginPostRequest {
-        public static String login(String password, String email, boolean remember) {
+    public static String login(String password, String email, boolean remember) {
         try {
             String rememberString;
-            if (remember){
-                rememberString="1";
-            }
-            else{
-                rememberString="0";
+            if (remember) {
+                rememberString = "1";
+            } else {
+                rememberString = "0";
             }
             return login_call_me(password, email, rememberString);
         } catch (Exception e) {
@@ -57,11 +62,10 @@ public class LoginPostRequest {
     public static String registration(String password, String email, String username, boolean vendor) {
         try {
             String vendorString;
-            if (vendor){
-                vendorString="1";
-            }
-            else{
-                vendorString="0";
+            if (vendor) {
+                vendorString = "1";
+            } else {
+                vendorString = "0";
             }
             return registration_call_me(password, email, username, vendorString);
         } catch (Exception e) {
@@ -71,7 +75,7 @@ public class LoginPostRequest {
         }
     }
 
-    public static String registration_call_me(String password, String email,String username, String vendorString) throws Exception {
+    public static String registration_call_me(String password, String email, String username, String vendorString) throws Exception {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("password", password);
         parameters.put("email", email);
@@ -101,10 +105,9 @@ public class LoginPostRequest {
 
     //not implemented
     public static boolean shortChecker(String email, String password) {
-        if ( email.length()<128 && email.length()>5 && password.length()>6 && password.length() < 128){
+        if (email.length() < 128 && email.length() > 5 && password.length() > 6 && password.length() < 128) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
@@ -119,38 +122,37 @@ public class LoginPostRequest {
         }
         if (password.length() > 128) {
             return "Password too long";
-        }
-        else{
+        } else {
             return "no_error";
         }
     }
 
-    public static boolean emailCheck (String email){
-        if (email.length()<7 || email.length()>128){
+    public static boolean emailCheck(String email) {
+        if (email.length() < 7 || email.length() > 128) {
             return false;
         }
         char[] emailChar = email.toCharArray();
-        int [] unwanted = {32,40, 41, 60, 62, 72, 73};
-        for (char c : emailChar){
+        int[] unwanted = {32, 40, 41, 60, 62, 72, 73};
+        for (char c : emailChar) {
             int ascii = (int) c;
-            if (ascii < 0||ascii > 176||contains(unwanted, ascii)){
+            if (ascii < 0 || ascii > 176 || contains(unwanted, ascii)) {
                 return false;
             }
         }
-        if (!email.contains(".")){
+        if (!email.contains(".")) {
             return false;
         }
         String[] atCheck = email.split("@");
-        if (atCheck.length!=2){
+        if (atCheck.length != 2) {
             return false;
         }
-        if (atCheck[0].length()<1 || atCheck[0].length()>64 || atCheck[1].length()<1){
+        if (atCheck[0].length() < 1 || atCheck[0].length() > 64 || atCheck[1].length() < 1) {
             return false;
         }
         return true;
     }
 
-    public static boolean contains(int[] arr, int check){
+    public static boolean contains(int[] arr, int check) {
         for (int n : arr) {
             if (n == check) {
                 return true;
@@ -159,4 +161,18 @@ public class LoginPostRequest {
         return false;
     }
 
+    public static String jsonParse(String serverReply) {
+        if (serverReply != null) {
+            try {
+                JSONObject jsonObj = new JSONObject(serverReply);
+                String ans = jsonObj.getString("status");
+                return ans;
+            } catch (final JSONException e) {
+                return "Generic Error";
+            }
+
+            } else {
+            return "Server Error";
+        }
+    }
 }
