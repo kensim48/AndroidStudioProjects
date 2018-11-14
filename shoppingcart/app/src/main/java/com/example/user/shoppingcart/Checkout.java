@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class Checkout extends AppCompatActivity {
 
     TextView textViewTotalPrice;
     RecyclerView recyclerView;
@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_checkout);
         productList = new ArrayList<>();
         textViewTotalPrice =findViewById(R.id.textViewTotalPrice);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
