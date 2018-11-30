@@ -18,6 +18,11 @@ public class CharaAdapter extends RecyclerView.Adapter<CharaAdapter.CharaViewHol
 
 
     //TODO 9.3 Constructor takes in a context object and a CharaDbHelper object
+
+
+
+
+    }
     //TODO 9.3 assign the inputs to instance variables
     public CharaAdapter(Context context, CharaDbHelper charaDbHelper) {
         mInflater = LayoutInflater.from(context);
