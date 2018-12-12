@@ -38,21 +38,21 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         //TODO 7.12 get an instance of charaDbHelper
-        charaDbHelper = CharaDbHelper.createCharaDbHelper(MainActivity.this);
+        charaDbHelper = CharaDbHelper.createCharaDbHelper(this);
 
         //TODO 7.13 test the methods you wrote
         TestCharaDbHelper.testQueryOneRowRandom(charaDbHelper);
         TestCharaDbHelper.testTable(charaDbHelper);
-        TestCharaDbHelper.testInsertOneRow(charaDbHelper,
-                "Alan Turing",
-                "WW2 Computer Scientist",
-                R.drawable.alanturing);
-        TestCharaDbHelper.testInsertOneRow(charaDbHelper,
-                "Miku",
-                "Vocaloid",
-                R.drawable.hatsunemiku);
-        TestCharaDbHelper.testDeleteOneRow(charaDbHelper,
-                "Alan Turing");
+//        TestCharaDbHelper.testInsertOneRow(charaDbHelper,
+//                "Alan Turing",
+//                "WW2 Computer Scientist",
+//                R.drawable.alanturing);
+//        TestCharaDbHelper.testInsertOneRow(charaDbHelper,
+//                "Miku",
+//                "Vocaloid",
+//                R.drawable.hatsunemiku);
+//        TestCharaDbHelper.testDeleteOneRow(charaDbHelper,
+//                "Alan Turing");
         //TODO run your app and see result in the logcat
 
         //TODO 8.1 Get References to the widgets
@@ -61,15 +61,28 @@ public class MainActivity extends AppCompatActivity {
         buttonGetImage = findViewById(R.id.buttonGetImage);
 
         //TODO 8.2 when the getImage button is clicked, get a random image from the SQLite Database
+        buttonGetImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                CharaDbHelper.CharaData charaData
+                        = charaDbHelper.queryOneRowRandom();
+                textViewName.setText(charaData.getName());
+                imageViewFile.setImageBitmap(charaData.getBitmap());
+
+            }
+        });
 
         //TODO 8.3 When the fab is clicked, launch DataEntryActivity and invoke startActivityForResult
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                Intent intent = new Intent(MainActivity.this,
+                        DataEntryActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_FAB);
 
             }
         });
@@ -95,7 +108,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //TODO 9.1 Complete this to bring users to the RecyclerView activity
-
+        if( id == R.id.go_recycler_view){
+            Intent intent = new Intent(this, RecylerViewActivity.class);
+            startActivity(intent);
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -103,6 +119,21 @@ public class MainActivity extends AppCompatActivity {
     //TODO 8.10 [on your own] Add a cancel button to DataEntryActivity and complete the result-cancelled portion
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQUEST_CODE_FAB){
 
+            if(resultCode == Activity.RESULT_OK) {
+
+                //My choice is to display a Toast that says how many rows our database has
+                long numberOfRows = charaDbHelper.queryNumRows();
+                Toast.makeText(MainActivity.this,
+                        "Number of rows: " + numberOfRows,
+                        Toast.LENGTH_LONG).show();
+            }
+
+            if(resultCode == Activity.RESULT_CANCELED){
+                //complete it yourself if you'd like
+            }
+
+        }
     }//onActivityResult
 }
