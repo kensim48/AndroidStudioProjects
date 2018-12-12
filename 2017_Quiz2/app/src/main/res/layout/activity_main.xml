@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.kensi.a2017_quiz2.MainActivity">
+    tools:context=".MainActivity">
 
     <EditText
         android:id="@+id/text"
@@ -26,6 +26,5 @@
         android:layout_height="wrap_content"
         android:text="Results here"
         android:textSize="24dp" />
-
 
 </LinearLayout>

@@ -25,6 +25,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static com.example.norman_lee.displayingdatanew.TestCharaDbHelper.TAG;
+
 /**
  * Created by norman_lee on 6/10/17.
  */
@@ -59,6 +61,7 @@ public class CharaDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(CharaContract.CharaSql.SQL_CREATE_TABLE);
         fillTable(sqLiteDatabase);
+        Log.i(TAG, "onCreate: aaaaaa");
 
     }
 

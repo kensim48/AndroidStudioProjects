@@ -1,8 +1,5 @@
 package com.example.kensi.a2017_quiz2;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,37 +10,40 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "Main";
 
     JSONArray jsonArray;
-    SQLiteDatabase folksongsDatabase;
-    String input;
+    FolksongsDbHelper folksongsDatabase;
+    private String TAG = "a";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        parseJson();
         final EditText editText = findViewById(R.id.text);
         Button button = findViewById(R.id.button);
-        TextView result = findViewById(R.id.result);
-
+        final TextView result = findViewById(R.id.result);
+        folksongsDatabase = FolksongsDbHelper.createFolksongsDbHelper(this,jsonArray);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                input = editText.toString();
-                parseJson(input);
+                String input = editText.getText().toString();
+                if (input.length()>=2){
+                    String a =input.substring(1).toLowerCase();
+                    String b = String.valueOf(input.charAt(0)).toUpperCase();
+                    input = b+a;
+                    Log.i(TAG, "onClick:aaa "+input);
+                }
+                String ans =  folksongsDatabase.queryOneRow(input);
+                result.setText(ans);
             }
         });
-
-
         //TODO 3.1 - update the XML Layout file to meet your needs
         //TODO 3.2 - see below
         //TODO 3.3 - complete this MainActivity class to meet the requirements of the question
@@ -68,22 +68,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //TODO 3.2 - complete this method
-    protected void parseJson(String input) {
+    protected void parseJson() {
 
         String jsonString = convertJsonToString(R.raw.folksongs);
-        try {
-            Log.i(TAG, "parseJson: " + jsonString);
-            JSONArray jsonArray = new JSONArray(jsonString);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                String title = jsonArray.getJSONObject(i).getString("title");
-                Log.i(TAG, "parseJson: " + title);
-            }
+        try{
+            jsonArray = new JSONArray(jsonString);
+//            folksongsDatabase = FolksongsDbHelper.createFolksongsDbHelper(this,jsonArray);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.i(TAG, "parseJson: aaaaaaa");
         }
 
     }
-
 }
-
-

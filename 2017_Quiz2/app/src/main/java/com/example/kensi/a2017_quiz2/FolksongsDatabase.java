@@ -26,6 +26,9 @@ public class FolksongsDatabase {
 
         public static final String SQL_DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
 
+        public static final String SQL_SELECT =  "SELECT" + SPACE + COL_TITLE + SPACE + "FROM" + SPACE +
+                TABLE_NAME + SPACE + "WHERE" + SPACE + COL_COUNTRY +SPACE + "=" +SPACE;
+
 
     }
 }
